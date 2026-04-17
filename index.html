@@ -197,8 +197,31 @@ body{display:flex;justify-content:center}
 .ios-txt{flex:1;font-size:12px;line-height:1.5;color:var(--text)}
 .ios-txt strong{color:var(--dark);font-weight:700}
 .ios-close{padding:6px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--border);font-size:11px;font-weight:700;cursor:pointer;color:var(--text);flex-shrink:0}
-#fab{position:fixed;bottom:22px;right:18px;width:52px;height:52px;border-radius:50%;background:var(--g);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 6px 20px rgba(22,163,74,.4);z-index:1500;display:none;align-items:center;justify-content:center;transition:all .2s}
-#fab:hover{transform:scale(1.08)}
+/* Permanent install button - small, centered at bottom */
+.perm-install-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--g);
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 1500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transition: transform 0.1s, background 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.perm-install-btn:active {
+  transform: translateX(-50%) scale(0.96);
+}
 </style>
 </head>
 <body>
@@ -212,6 +235,9 @@ body{display:flex;justify-content:center}
 </div>
 
 <div class="s-toast" id="sToast">🔥 Streak Bonus! +5 pts</div>
+
+<!-- Permanent install button -->
+<button class="perm-install-btn" id="installBtn">📲 Install App</button>
 
 <div id="app">
 
@@ -386,8 +412,6 @@ body{display:flex;justify-content:center}
 </div>
 
 </div>
-
-<button id="fab" onclick="installApp()">📲</button>
 
 <script>
 const SUBJ={
@@ -928,7 +952,7 @@ english:[
 {q:"What is the term for a question added to the end of a statement to invite agreement?",o:["Rhetorical question","Leading question","Tag question","Open question"],a:2,d:2},
 {q:"What is the term for a question asked for effect rather than to get an answer?",o:["Tag question","Leading question","Rhetorical question","Closed question"],a:2,d:2},
 ],
- geography:[
+ geography: [
 {q:"What is the largest continent in the world?",o:["Africa","Europe","Asia","South America"],a:2,d:1},
 {q:"What is the capital city of Nigeria?",o:["Lagos","Kano","Abuja","Ibadan"],a:2,d:1},
 {q:"Which river is the longest in Africa?",o:["Congo","Niger","Nile","Zambezi"],a:2,d:1},
@@ -1030,7 +1054,7 @@ english:[
 {q:"What is the term for a flat-topped hill or mountain with steep sides?",o:["Plain","Valley","Ridge","Plateau"],a:3,d:2},
 {q:"What is the capital city of Senegal?",o:["Abidjan","Bamako","Conakry","Dakar"],a:3,d:2},
 ],
- agric:[
+agric: [
 {q:"The process of turning over soil to prepare it for planting is called?",o:["Harvesting","Tillage","Irrigation","Pruning"],a:1,d:1},
 {q:"Which soil type is most suitable for agricultural purposes?",o:["Sandy","Clay","Loamy","Silty"],a:2,d:1},
 {q:"What is the scientific name for maize?",o:["Oryza sativa","Zea mays","Sorghum bicolor","Triticum aestivum"],a:1,d:2},
@@ -1131,8 +1155,8 @@ english:[
 {q:"What is the term for the outer protective covering of a seed?",o:["Endosperm","Embryo","Cotyledon","Testa"],a:3,d:2},
 {q:"What is the term for the food storage tissue in a seed?",o:["Testa","Embryo","Endosperm","Cotyledon"],a:2,d:2},
 {q:"Which of the following is a method of vegetative propagation?",o:["Cross pollination","Self pollination","Layering","Seed dispersal"],a:2,d:2},
-  ],
-economics:[
+],
+economics: [
 {q:"What does GDP stand for?",o:["General Domestic Product","Gross Domestic Product","Gross Development Plan","General Development Product"],a:1,d:1},
 {q:"When price increases, quantity demanded?",o:["Increases","Stays the same","Decreases","Doubles"],a:2,d:1},
 {q:"Inflation is best described as?",o:["A fall in general price levels","A rise in general price levels","An increase in employment","A fall in money supply"],a:1,d:1},
@@ -1235,7 +1259,7 @@ economics:[
 {q:"What is the term for a market where there are no barriers to entry or exit?",o:["Monopoly","Oligopoly","Contestable market","Duopoly"],a:2,d:3},
 {q:"What is the term for the long-run reduction in average costs as output increases?",o:["Diseconomies of scale","Returns to scale","Variable costs","Economies of scale"],a:3,d:2},
 ],
-commerce:[
+commerce: [
 {q:"What does VAT stand for?",o:["Value Added Tax","Variable Asset Tax","Voluntary Assessment Tax","Value Asset Transfer"],a:0,d:1},
 {q:"An invoice is a document that?",o:["Acknowledges payment","Shows goods sold and their prices","Allows goods through customs","Certifies tax payment"],a:1,d:1},
 {q:"FOB in international trade stands for?",o:["Free On Board","Freight On Boat","Free Over Border","Freight Over Boundary"],a:0,d:2},
@@ -1338,7 +1362,7 @@ commerce:[
 {q:"What is the purpose of a delivery note?",o:["To show money owed","To acknowledge payment","To accompany goods and confirm their delivery","To cancel an order"],a:2,d:1},
 {q:"What is a purchase order?",o:["A receipt for goods","A document sent by a buyer to a seller requesting goods","A delivery confirmation","A credit note"],a:1,d:1},
 ],
-government:[
+government: [
 {q:"Nigeria operates which type of government?",o:["Unitary","Confederate","Federal","Monarchical"],a:2,d:1},
 {q:"The Rule of Law means?",o:["The president is above the law","Everyone is equal before the law","Only judges can make laws","The military governs"],a:1,d:1},
 {q:"A constitution is best described as?",o:["A set of traditions","The fundamental law of a country","The president's policy speech","A government directory"],a:1,d:1},
@@ -1441,7 +1465,7 @@ government:[
 {q:"What is common law?",o:["Laws passed by parliament","Laws based on custom and court decisions over time","Laws made by local government","Laws made by the president"],a:1,d:2},
 {q:"What is the term for the formal written request to a government or public authority signed by many people?",o:["Manifesto","Resolution","Referendum","Petition"],a:3,d:1},
 ],
-history:[
+history: [
 {q:"Nigeria gained independence from Britain in which year?",o:["1957","1958","1960","1963"],a:2,d:1},
 {q:"Who was the first President of Nigeria?",o:["Obafemi Awolowo","Abubakar Tafawa Balewa","Nnamdi Azikiwe","Ahmadu Bello"],a:2,d:1},
 {q:"The Berlin Conference of 1884-1885 was held to?",o:["Abolish the slave trade","Partition Africa among European powers","Establish the League of Nations","Create trade routes"],a:1,d:2},
@@ -1543,7 +1567,7 @@ history:[
 {q:"What was the NCNC in Nigerian politics?",o:["A military group","A trade union","A political party led by Nnamdi Azikiwe representing Igbo and Eastern interests","A religious organisation"],a:2,d:2},
 {q:"What was the Northern People's Congress?",o:["A southern Nigerian political party","A military group","A political party led by Ahmadu Bello representing Northern Nigerian interests","A pan-African movement"],a:2,d:2},
 ],
-computer:[
+computer: [
 {q:"What does CPU stand for?",o:["Computer Power Unit","Central Processing Unit","Central Program Utility","Computer Processing Utility"],a:1,d:1},
 {q:"What is the binary equivalent of decimal 10?",o:["0110","1000","1010","1100"],a:2,d:2},
 {q:"HTML stands for?",o:["HyperText Markup Language","HyperText Making Language","HighText Markup Language","HyperText Management Language"],a:0,d:1},
@@ -1645,7 +1669,7 @@ computer:[
 {q:"What is the term for the process of organising files on a hard disk to improve performance?",o:["Formatting","Partitioning","Defragmentation","Encryption"],a:2,d:2},
 {q:"What is virtual reality?",o:["A type of database","A simulated three-dimensional environment that users can interact with using special equipment","A type of programming language","A cloud computing service"],a:1,d:2},
 ],
-crs:[
+crs: [
 {q:"How many books are in the Old Testament?",o:["27","36","39","66"],a:2,d:1},
 {q:"Who was the first King of Israel?",o:["David","Solomon","Saul","Samuel"],a:2,d:1},
 {q:"Jesus was baptized by whom?",o:["Peter","Paul","James","John the Baptist"],a:3,d:1},
@@ -1748,7 +1772,7 @@ crs:[
 {q:"What is salvation in Christianity?",o:["Following the Ten Commandments","Deliverance from sin and its consequences through faith in Jesus Christ","Attending church regularly","Performing good works only"],a:1,d:1},
 {q:"What is the term for the body of believers who follow Jesus Christ?",o:["The Temple","The Synagogue","The Mosque","The Church"],a:3,d:1},
 ],
-irs:[
+irs: [
 {q:"How many pillars of Islam are there?",o:["3","4","5","6"],a:2,d:1},
 {q:"The holy book of Islam is called?",o:["Torah","Injil","Quran","Zabur"],a:2,d:1},
 {q:"What is the first pillar of Islam?",o:["Salat","Sawm","Zakat","Shahada"],a:3,d:1},
@@ -1866,7 +1890,7 @@ irs:[
 {q:"What does Allahu Akbar mean?",o:["Praise be to Allah","In the name of Allah","Peace be upon you","Allah is the Greatest"],a:3,d:1},
 {q:"What is the term for the Islamic practice of remembrance of Allah?",o:["Salat","Sawm","Dhikr","Tarawih"],a:2,d:2},
 ],
-furthermaths:[
+furthermaths: [
 {q:"What is the derivative of f(x) = x squared?",o:["x","2x","x squared","2x squared"],a:1,d:2},
 {q:"Evaluate the integral of 2x dx",o:["x + C","2x squared + C","x squared + C","4x + C"],a:2,d:2},
 {q:"If z = 3 + 4i, what is the modulus of z?",o:["3","4","5","7"],a:2,d:2},
@@ -1975,7 +1999,7 @@ furthermaths:[
 {q:"What is variance in statistics?",o:["The average value","The most common value","The middle value","The measure of spread equal to the mean of squared deviations from the mean"],a:3,d:2},
 {q:"What is the standard deviation?",o:["The variance squared","The square root of the variance","The mean of the data","The range of the data"],a:1,d:1},
 ],
-quantitative:[
+quantitative: [
 {q:"Complete the series: 2, 4, 8, 16, __",o:["20","24","28","32"],a:3,d:1},
 {q:"5 workers complete a job in 10 days. How many days will 10 workers take?",o:["2","4","5","8"],a:2,d:2},
 {q:"What is 25% of 80?",o:["15","20","25","30"],a:1,d:1},
@@ -2078,7 +2102,7 @@ quantitative:[
 {q:"Complete the series: 5, 11, 23, 47, 95, __",o:["181","183","189","191"],a:3,d:2},
 {q:"A project takes 18 days with 6 workers. How many extra workers are needed to finish in 12 days?",o:["2","3","4","5"],a:1,d:2},
 ],
-verbal:[
+verbal: [
 {q:"Choose the ODD one out: Apple, Mango, Banana, Carrot",o:["Apple","Mango","Banana","Carrot"],a:3,d:1},
 {q:"Hot is to Cold as Day is to?",o:["Noon","Night","Evening","Dawn"],a:1,d:1},
 {q:"Which word is closest in meaning to Courageous?",o:["Timid","Fearful","Brave","Nervous"],a:2,d:1},
@@ -2187,8 +2211,6 @@ verbal:[
 {q:"Complete the analogy: Chapters are to Book as Episodes are to?",o:["Movie","Series","Song","Play"],a:1,d:1},
 {q:"If ZEBRA is coded as ACHBS, how is HORSE coded?",o:["IPTUF","IQSUF","IPSTF","IPSUF"],a:3,d:3},
 ],
-};
-
 const A={
   subjects:[],bundle:null,challengeData:null,
   questions:[],qi:0,score:0,streak:0,maxStreak:0,
@@ -2555,17 +2577,26 @@ function snd(type){
 }
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();A.deferredPrompt=e;
-  document.getElementById('fab').style.display='flex';
 });
 function installApp(){
   if(A.deferredPrompt){
     A.deferredPrompt.prompt();
     A.deferredPrompt.userChoice.then(()=>{
       A.deferredPrompt=null;
-      document.getElementById('fab').style.display='none';
     });
+  } else {
+    let instructions = '';
+    if (/android/i.test(navigator.userAgent)) {
+      instructions = 'Tap the browser menu (⋮) and select "Install app" or "Add to Home Screen".';
+    } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+      instructions = 'Tap the Share button (⬆️) then "Add to Home Screen".';
+    } else {
+      instructions = 'Use your browser\'s "Add to Home Screen" or "Install" option.';
+    }
+    alert(`📲 Install TeaJay Quiz:\n\n${instructions}\n\nIf you just opened the app, wait a few seconds and try again.`);
   }
 }
+document.getElementById('installBtn').addEventListener('click', installApp);
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.navigator.standalone;
 if(isIOS){
   const banner=document.getElementById('ios-banner');
@@ -2574,6 +2605,9 @@ if(isIOS){
 }
 loadData();
 renderHomeStats();
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(err=>console.log('SW error',err));
+}
 </script>
 </body>
 </html>
