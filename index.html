@@ -2575,15 +2575,27 @@ function snd(type){
     }
   }catch(e){}
 }
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();A.deferredPrompt=e;
+// ========== INSTALL BUTTON LOGIC (REPLACEMENT) ==========
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('Install prompt captured');
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'flex';
 });
-function installApp(){
-  if(A.deferredPrompt){
-    A.deferredPrompt.prompt();
-    A.deferredPrompt.userChoice.then(()=>{
-      A.deferredPrompt=null;
-    });
+
+async function installApp() {
+  const btn = document.getElementById('installBtn');
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`Install outcome: ${outcome}`);
+    deferredPrompt = null;
+    if (outcome === 'accepted') {
+      if (btn) btn.style.display = 'none';
+    }
   } else {
     let instructions = '';
     if (/android/i.test(navigator.userAgent)) {
@@ -2596,7 +2608,15 @@ function installApp(){
     alert(`📲 Install TeaJay Quiz:\n\n${instructions}\n\nIf you just opened the app, wait a few seconds and try again.`);
   }
 }
-document.getElementById('installBtn').addEventListener('click', installApp);
+
+// Make sure the button exists and attach the event
+const installBtnElement = document.getElementById('installBtn');
+if (installBtnElement) {
+  installBtnElement.addEventListener('click', installApp);
+} else {
+  console.error('Install button not found!');
+}
+// ========== END INSTALL LOGIC ==========
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.navigator.standalone;
 if(isIOS){
   const banner=document.getElementById('ios-banner');
