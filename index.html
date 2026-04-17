@@ -2576,39 +2576,57 @@ function snd(type){
   }catch(e){}
 }
 // ========== INSTALL BUTTON LOGIC (REPLACEMENT) ==========
+// ========== RELIABLE INSTALL BUTTON (FALLBACK TO MANUAL) ==========
 let deferredPrompt = null;
 
+// Capture the install prompt if it ever fires
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
   console.log('Install prompt captured');
+  // Optionally change button text
   const btn = document.getElementById('installBtn');
-  if (btn) btn.style.display = 'flex';
+  if (btn) btn.textContent = '📲 Install App (Native)';
 });
 
+// Function to show manual instructions (always works)
+function showManualInstructions() {
+  let msg = '';
+  if (/android/i.test(navigator.userAgent)) {
+    msg = '1. Tap the browser menu (⋮)\n2. Select "Install app" or "Add to Home Screen"\n3. Follow the prompts';
+  } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+    msg = '1. Tap the Share button (⬆️)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" in the top right';
+  } else {
+    msg = 'Use your browser\'s "Add to Home Screen" or "Install" option from the menu.';
+  }
+  alert(`📲 How to install this app:\n\n${msg}\n\n(This app works offline after installation.)`);
+}
+
+// The install button click handler
 async function installApp() {
-  const btn = document.getElementById('installBtn');
   if (deferredPrompt) {
+    // Native prompt is available
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    console.log(`Install outcome: ${outcome}`);
-    deferredPrompt = null;
     if (outcome === 'accepted') {
-      if (btn) btn.style.display = 'none';
+      console.log('User installed via native prompt');
+      document.getElementById('installBtn').style.display = 'none';
     }
+    deferredPrompt = null;
   } else {
-    let instructions = '';
-    if (/android/i.test(navigator.userAgent)) {
-      instructions = 'Tap the browser menu (⋮) and select "Install app" or "Add to Home Screen".';
-    } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
-      instructions = 'Tap the Share button (⬆️) then "Add to Home Screen".';
-    } else {
-      instructions = 'Use your browser\'s "Add to Home Screen" or "Install" option.';
-    }
-    alert(`📲 Install TeaJay Quiz:\n\n${instructions}\n\nIf you just opened the app, wait a few seconds and try again.`);
+    // No native prompt, show manual instructions
+    showManualInstructions();
   }
 }
 
+// Attach event to button (make sure button exists)
+const installBtn = document.getElementById('installBtn');
+if (installBtn) {
+  installBtn.addEventListener('click', installApp);
+} else {
+  console.error('Install button not found!');
+}
+// ========== END INSTALL LOGIC ==========
 // Make sure the button exists and attach the event
 const installBtnElement = document.getElementById('installBtn');
 if (installBtnElement) {
